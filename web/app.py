@@ -16,7 +16,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Define secret key to enable session
 app.secret_key = 'This is your secret key to utilize session in Flask'
 
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
 
 
@@ -32,6 +32,10 @@ def uploadFile():
         uploaded_img = request.files['uploaded-file']
         # Extracting uploaded data file name
         img_filename = secure_filename(uploaded_img.filename)
+        path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], img_filename)
+        # Creating directory
+        if not os.path.exists(path_to_save):
+            os.makedirs(app.config['UPLOAD_FOLDER'])
         # Upload file to database (defined uploaded folder in static path)
         uploaded_img.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
         # Storing uploaded file path in flask session
