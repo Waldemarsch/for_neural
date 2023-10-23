@@ -8,16 +8,15 @@
 	<body>
 	    <div align="center">
 	    <h1>Загрузить и показать изображение</h1>
-
-	    <form method="POST" enctype="multipart/form-data" action="/">
-	        <input type="file" id="myFile" name="uploaded-file" accept=".png">
+	    <form method="POST" enctype="multipart/form-data" action="/make_mask">
+	        <input type="file" id="myFile" name="uploaded-file" accept=".jpg,.png,.tif,.jpeg">
 	        <input type="submit" value="Submit" class="btn btn-primary">
 	    </form>
 	  <br>
 	  <p style="color:green;">File uploaded successfully</p>
 		    <br>
 		    <br>
-	  <img src="{{ user_image }}" alt="Italian Trulli">
+	  <img src="{{ user_image }}" alt="Image didn't load successfully">
 	    </div>
 	  </body>
 </html>
