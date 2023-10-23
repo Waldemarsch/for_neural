@@ -17,7 +17,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'This is your secret key to utilize session in Flask'
 
 if __name__=='__main__':
-    app.run(debug = True)
+    app.run(debug=True)
 
 
 @app.route('/')
