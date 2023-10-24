@@ -2,21 +2,38 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<title>Главная</title>
 	</head>
 	<body>
-	    <div align="center">
-	    <h1>Загрузить и показать изображение</h1>
-	    <form method="POST" enctype="multipart/form-data" action="/make_mask">
-	        <input type="file" id="myFile" name="uploaded-file" accept=".jpg,.png,.tif,.jpeg">
-	        <input type="submit" value="Submit" class="btn btn-primary">
-	    </form>
-	  <br>
-	  <p style="color:green;">File uploaded successfully</p>
-		    <br>
-		    <br>
-	  <img src="{{ user_image }}" alt="Image didn't load successfully">
-	    </div>
-	  </body>
+		<div id="upload" align="center">
+			<h1>Загрузить и показать изображение</h1>
+		    <form method="POST" enctype="multipart/form-data" action="/">
+		        <input type="file" id="myFile" name="uploaded-file" accept=".jpg,.png,.tif,.jpeg" onchange="readURL(this);">
+			    <br>
+			    <br>
+			    <img id="gev" src="{{ img_file }}" alt="#">
+			    <br>
+		        <input type="submit" value="Загрузить картинку в нейросеть">
+		    </form>
+		</div>
+		<br>
+		<div id="neuro" align="center">
+			    <h1>Here is mask for satellite image</h1>
+				<img src="{{ img_file }}" alt="Image didn't load successfully" width="500" height="400">
+                <img src="{{ mask_path }}" alt="Image didn't load successfully" width="500" height="400">
+		</div>
+		<script>
+			function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+				    reader.onload = function (e) {
+				      $('#gev').attr('src', e.target.result);
+				    };
+				    reader.readAsDataURL(input.files[0]);
+                }
+			}
+		</script>
+	</body>
 </html>

@@ -24,7 +24,7 @@ def index():
     return render_template('index_upload_and_display_image.html')
 
 @app.route('/',  methods=("POST", "GET"))
-def upload_file():
+def on_submit():
     if request.method == 'POST':
         # Upload file flask
         uploaded_img = request.files['uploaded-file']
@@ -40,10 +40,16 @@ def upload_file():
         # Storing uploaded file path in flask session
         session['uploaded_img_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'], img_filename)
 
-        return render_template('index_upload_and_display_image_page2.html', user_image=session['uploaded_img_file_path'])
+        make_mask()
 
-@app.route('/make_mask', methods=['POST'])
+        return render_template('index_upload_and_display_image_page2.html',
+                               img_file=session['uploaded_img_file_path'],
+                               mask_path=session['mask_file_path'])
+
 def make_mask():
+    # Creating directory
+    if not os.path.exists('./models/unet_new'):
+        os.makedirs('./models/unet_new')
     # Retrieving uploaded file path from session
     model = load_model(UNet, './models/unet_new')
     img_file_path = session.get('uploaded_img_file_path', None)
@@ -51,12 +57,9 @@ def make_mask():
     mask = predict_image(model=model, image_path=img_file_path)
     mask_img = Image.fromarray(mask)
     path_to_save = mask_path
-    print(mask_path)
     session['mask_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'], path_to_save)
     mask_img.save(path_to_save)
-    
-    # Display image in Flask application web page
-    return render_template('index_show_image_and_mask.html', user_image=img_file_path, mask_path=mask_path)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
